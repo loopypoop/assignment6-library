@@ -15,16 +15,12 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    public User createOrUpdate(User user) {
-        return iUserService.createOrUpdate(user);
+    public User createOrUpdate() {
+        return iUserService.createOrUpdate();
     }
 
-    public void delete(Integer id) {
-        iUserService.delete(id);
-    }
-
-    public Address createOrUpdateAddress(Address address) {
-        return iUserService.createOrUpdateAddress(address);
+    public void delete() {
+        iUserService.delete();
     }
 
     public List<User> getAll() {
@@ -37,5 +33,21 @@ public class UserController {
 
     public List<Book> getBooksByUserId(Integer userId) {
         return iUserService.getOwnedBooks(userId);
+    }
+
+    public Address createOrUpdateAddress() {
+        return iUserService.createOrUpdateAddress();
+    }
+
+    public List<Address> getAllAddresses() {
+        return iUserService.getAllAddresses();
+    }
+
+    public void deleteAddress() {
+        iUserService.deleteAddress();
+    }
+
+    public User login() {
+        return iUserService.login();
     }
 }

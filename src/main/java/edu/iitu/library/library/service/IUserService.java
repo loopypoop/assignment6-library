@@ -9,18 +9,21 @@ import java.util.List;
 public interface IUserService {
     Address getAddressByUserId(Integer id);
 
-    User login(String email, String password);
+    User login();
 
     List<User> getAllUsers();
 
-    User createOrUpdate(User user);
+    User createOrUpdate();
 
-    void delete(Integer id);
+    void delete();
 
-    Address createOrUpdateAddress(Address address);
+    Address createOrUpdateAddress();
 
-    void deleteAddress(Integer id);
+    void deleteAddress();
 
     List<Book> getOwnedBooks(Integer userId);
+
+    List<Address> getAllAddresses();
+
 
 }

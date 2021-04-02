@@ -14,12 +14,16 @@ public class AuthorController {
     @Autowired
     private IAuthorService iAuthorService;
 
-    public Author createOrUpdate(Author author) {
-        return iAuthorService.createOrUpdate(author);
+    public Author createOrUpdate() {
+        return iAuthorService.createOrUpdate();
     }
 
-    public void deleteById(Integer id) {
-        iAuthorService.deleteById(id);
+    public void deleteById() {
+        iAuthorService.deleteById();
+    }
+
+    public List<Author> getAll() {
+        return iAuthorService.getAll();
     }
 
     public void addBookToAuthor(Integer authorId, Book book) {

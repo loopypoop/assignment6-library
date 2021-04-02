@@ -7,14 +7,16 @@ import java.util.List;
 
 public interface IAuthorService {
 
-    Author createOrUpdate(Author author);
+    Author createOrUpdate();
 
-    void deleteById(Integer id);
+    void deleteById();
 
     void addBook(Integer authorId, Book book);
 
     List<Book> getBooksByAuthorId(Integer authorId);
 
     List<Book> getBooksByAuthorName(String name);
+
+    List<Author> getAll();
 
 }

@@ -13,12 +13,16 @@ public class BookController {
     @Autowired
     private IBookService iBookService;
 
-    public Book createOrUpdate(Book book) {
-        return iBookService.createOrUpdate(book);
+    public Book createOrUpdate() {
+        return iBookService.createOrUpdate();
     }
 
     public List<Book> getAllBooks() {
         return iBookService.getAllBooks();
+    }
+
+    public void delete() {
+        iBookService.delete();
     }
 
 }

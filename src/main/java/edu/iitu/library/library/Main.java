@@ -21,78 +21,204 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-        System.out.print("Enter name: ");
-        String name = in.next();
-        System.out.print("Enter email: ");
-        String email = in.next();
-        System.out.print("Enter password: ");
-        String password = in.next();
+        System.out.println("1. CRUD");
+        System.out.println("2. Login");
+        System.out.println("0. Exit");
 
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
+        int initialChoice = in.nextInt();
 
-        userController.createOrUpdate(user);
-        System.out.println("User created successfully!");
+        switch (initialChoice) {
+            //CRUD
+            case 1:
+                int entityChoice = -1;
+                while (entityChoice != 0) {
+                    System.out.println("1. User");
+                    System.out.println("2. User's Address");
+                    System.out.println("3. Book");
+                    System.out.println("4. Author");
+                    System.out.println("0. Back");
 
-        System.out.print("Enter street: ");
-        String street = in.next();
-        System.out.print("Enter house number: ");
-        Integer houseNo = in.nextInt();
+                    entityChoice = in.nextInt();
+                    int crudChoice = -1;
 
-        Address address = new Address();
-        address.setStreet(street);
-        address.setHousNo(houseNo);
+                    switch (entityChoice) {
+                        case 1:
+                            System.out.println("1. Create");
+                            System.out.println("2. Show all");
+                            System.out.println("3. Delete");
+                            crudChoice = in.nextInt();
 
-        address.setUser(user);
+                            switch (crudChoice) {
+                                case 1:
+                                    userController.createOrUpdate();
+                                    break;
+                                case 2:
+                                    userController.getAll();
+                                    break;
+                                case 3:
+                                    userController.delete();
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            System.out.println("1. Create");
+                            System.out.println("2. Show all");
+                            System.out.println("3. Delete");
 
-        userController.createOrUpdateAddress(address);
-        System.out.println("Address added to user!");
-        System.out.println(userController.getAddressByUserId(user.getId()));
+                            crudChoice = in.nextInt();
 
-        System.out.print("Enter name of Book: ");
-        String bookName = in.next();
-        System.out.print("Enter description: ");
-        String ignore = in.nextLine();
-        String description = in.nextLine();
-        BookState initialState = BookState.AVAILABLE;
-        System.out.print("Enter price: ");
-        Double price = in.nextDouble();
+                            switch (crudChoice) {
+                                case 1:
+                                    userController.createOrUpdateAddress();
+                                    break;
+                                case 2:
+                                    userController.getAllAddresses();
+                                    break;
+                                case 3:
+                                    userController.delete();
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            System.out.println("1. Create");
+                            System.out.println("2. Show all");
+                            System.out.println("3. Delete");
 
-        Book book = new Book();
-        book.setName(bookName);
-        book.setDescription(description);
-        book.setState(initialState);
-        book.setPrice(price);
-        book.setUserId(user.getId());
+                            crudChoice = in.nextInt();
 
-        bookController.createOrUpdate(book);
+                            switch (crudChoice) {
+                                case 1:
+                                    bookController.createOrUpdate();
+                                    break;
+                                case 2:
+                                    bookController.getAllBooks();
+                                    break;
+                                case 3:
+                                    bookController.delete();
+                                    break;
+                            }
+                            break;
+                        case 4:
+                            System.out.println("1. Create");
+                            System.out.println("2. Show all");
+                            System.out.println("3. Delete");
 
-        System.out.println("Book created!");
+                            crudChoice = in.nextInt();
 
-        System.out.println(userController.getBooksByUserId(user.getId()));
+                            switch (crudChoice) {
+                                case 1:
+                                    authorController.createOrUpdate();
+                                    break;
+                                case 2:
+                                    authorController.getAll();
+                                    break;
+                                case 3:
+                                    authorController.deleteById();
+                                    break;
+                            }
+                            break;
+                        case 0:
+                            return;
+                    }
+                }
+                break;
 
-        System.out.print("Enter author's name: ");
-        String authorName = in.next();
-        System.out.print("Enter something about him/her: ");
-        String ignore1 = in.nextLine();
-        String about = in.nextLine();
+            //SERVICES
+            case 2:
+                User currentUser = userController.login();
 
-        Author author = new Author();
-        author.setName(authorName);
-        author.setAbout(about);
+                if (currentUser != null) {
+                    //MENU
+                    System.out.println("WELCOME " + currentUser.getName());
+                    System.out.println("1. Show all books");
+                    System.out.println("2. Search book");
+                    System.out.println("3. Show available books");
+                    System.out.println();
 
-        authorController.createOrUpdate(author);
 
-        authorController.addBookToAuthor(author.getId(), book);
+                } else {
+                    System.out.println("Wrong email or password!");
+                }
+                break;
+            case 0:
+                System.out.println("Good bye!");
+                return;
+        }
 
-//        System.out.println("Start by id");
-//        System.out.println(authorController.getBooksByAuthorId(author.getId()));
-//        System.out.println("End by id");
-
-        System.out.println("Start by author name");
-        System.out.println(authorController.getBooksByAuthorName(author.getName()));
-        System.out.println("End by author name");
+//        Scanner in = new Scanner(System.in);
+//
+//        System.out.print("Enter name: ");
+//        String name = in.next();
+//        System.out.print("Enter email: ");
+//        String email = in.next();
+//        System.out.print("Enter password: ");
+//        String password = in.next();
+//
+//        User user = new User();
+//        user.setName(name);
+//        user.setEmail(email);
+//        user.setPassword(password);
+//
+//        userController.createOrUpdate(user);
+//        System.out.println("User created successfully!");
+//
+//        System.out.print("Enter street: ");
+//        String street = in.next();
+//        System.out.print("Enter house number: ");
+//        Integer houseNo = in.nextInt();
+//
+//        Address address = new Address();
+//        address.setStreet(street);
+//        address.setHousNo(houseNo);
+//
+//        address.setUser(user);
+//
+//        userController.createOrUpdateAddress(address);
+//        System.out.println("Address added to user!");
+//        System.out.println(userController.getAddressByUserId(user.getId()));
+//
+//        System.out.print("Enter name of Book: ");
+//        String bookName = in.next();
+//        System.out.print("Enter description: ");
+//        String ignore = in.nextLine();
+//        String description = in.nextLine();
+//        BookState initialState = BookState.AVAILABLE;
+//        System.out.print("Enter price: ");
+//        Double price = in.nextDouble();
+//
+//        Book book = new Book();
+//        book.setName(bookName);
+//        book.setDescription(description);
+//        book.setState(initialState);
+//        book.setPrice(price);
+//        book.setUserId(user.getId());
+//
+//        bookController.createOrUpdate(book);
+//
+//        System.out.println("Book created!");
+//
+//        System.out.println(userController.getBooksByUserId(user.getId()));
+//
+//        System.out.print("Enter author's name: ");
+//        String authorName = in.next();
+//        System.out.print("Enter something about him/her: ");
+//        String ignore1 = in.nextLine();
+//        String about = in.nextLine();
+//
+//        Author author = new Author();
+//        author.setName(authorName);
+//        author.setAbout(about);
+//
+//        authorController.createOrUpdate(author);
+//
+//        authorController.addBookToAuthor(author.getId(), book);
+//
+////        System.out.println("Start by id");
+////        System.out.println(authorController.getBooksByAuthorId(author.getId()));
+////        System.out.println("End by id");
+//
+//        System.out.println("Start by author name");
+//        System.out.println(authorController.getBooksByAuthorName(author.getName()));
+//        System.out.println("End by author name");
     }
 }

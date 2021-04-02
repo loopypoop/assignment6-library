@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Scanner;
 
 @Service
 public class UserService implements IUserService {
+
+    Scanner in = new Scanner(System.in);
 
     @Autowired
     private UserRepository userRepository;
@@ -31,7 +34,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User login(String email, String password) {
+    public User login() {
+        System.out.print("Enter email: ");
+        String email = in.next();
+        System.out.print("Enter password: ");
+        String password = in.next();
+
         return userRepository.getByEmailAndPassword(email, password);
     }
 
@@ -41,27 +49,58 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createOrUpdate(User user) {
+    public User createOrUpdate() {
+
+        System.out.print("Enter name: ");
+        String name = in.next();
+        System.out.print("Enter email: ");
+        String email = in.next();
+        System.out.print("Enter password: ");
+        String password = in.next();
+
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setPassword(password);
         return userRepository.save(user);
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete() {
+        System.out.print("Enter user's ID: ");
+        Integer id = in.nextInt();
         userRepository.deleteById(id);
     }
 
     @Override
-    public Address createOrUpdateAddress(Address address) {
+    public Address createOrUpdateAddress() {
+
+        System.out.print("Enter street: ");
+        String street = in.next();
+        System.out.print("Enter house number: ");
+        Integer houseNo = in.nextInt();
+
+        Address address = new Address();
+        address.setStreet(street);
+        address.setHousNo(houseNo);
+
         return addressRepository.save(address);
     }
 
     @Override
-    public void deleteAddress(Integer id) {
+    public void deleteAddress() {
+        System.out.print("Enter ID of address: ");
+        Integer id = in.nextInt();
         addressRepository.deleteById(id);
     }
 
     @Override
     public List<Book> getOwnedBooks(Integer userId) {
         return bookRepository.getAllByUserId(userId);
+    }
+
+    @Override
+    public List<Address> getAllAddresses() {
+        return addressRepository.findAll();
     }
 }

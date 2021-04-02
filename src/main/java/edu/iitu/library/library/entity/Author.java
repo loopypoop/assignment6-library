@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,14 +23,16 @@ public class Author {
     @Column
     private String about;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name = "authors_books", joinColumns = {
-            @JoinColumn(name = "author_id", referencedColumnName = "id",
-            nullable = false, updatable = false)},
-            inverseJoinColumns = {
-            @JoinColumn(name = "book_id", referencedColumnName = "id",
-            nullable = false, updatable = false)})
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
     private Set<Book> books = new HashSet<>();
 
-
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", about='" + about + '\'' +
+                ", books=" + books +
+                '}';
+    }
 }

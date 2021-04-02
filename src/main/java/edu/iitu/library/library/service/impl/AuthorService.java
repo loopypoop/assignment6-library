@@ -9,9 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Scanner;
 
 @Service
 public class AuthorService implements IAuthorService {
+
+    Scanner in = new Scanner(System.in);
 
     @Autowired
     private AuthorRepository authorRepository;
@@ -20,12 +23,23 @@ public class AuthorService implements IAuthorService {
     private BookRepository bookRepository;
 
     @Override
-    public Author createOrUpdate(Author author) {
+    public Author createOrUpdate() {
+        System.out.print("Enter author's name: ");
+        String authorName = in.next();
+        System.out.print("Enter something about him/her: ");
+        String ignore1 = in.nextLine();
+        String about = in.nextLine();
+
+        Author author = new Author();
+        author.setName(authorName);
+        author.setAbout(about);
         return authorRepository.save(author);
     }
 
     @Override
-    public void deleteById(Integer id) {
+    public void deleteById() {
+        System.out.print("Enter author's ID: ");
+        Integer id = in.nextInt();
         authorRepository.deleteById(id);
     }
 
@@ -44,4 +58,8 @@ public class AuthorService implements IAuthorService {
         return bookRepository.findAllByAuthorName(name);
     }
 
+    @Override
+    public List<Author> getAll() {
+        return authorRepository.findAll();
+    }
 }

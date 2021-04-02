@@ -40,7 +40,16 @@ public class Book {
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     private User user;
 
-    @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
+//    @ManyToMany(mappedBy = "books", fetch = FetchType.EAGER)
+
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "authors_books", joinColumns = {
+            @JoinColumn(name = "book_id", referencedColumnName = "id",
+                    nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "author_id", referencedColumnName = "id",
+                            nullable = false, updatable = false)})
     private Set<Author> authors = new HashSet<>();
 
     @Override
@@ -52,6 +61,7 @@ public class Book {
                 ", state=" + state +
                 ", price=" + price +
                 ", userId=" + userId +
+                ", user=" + userId +
                 '}';
     }
 }
