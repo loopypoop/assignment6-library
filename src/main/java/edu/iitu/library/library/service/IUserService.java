@@ -13,7 +13,9 @@ public interface IUserService {
 
     List<User> getAllUsers();
 
-    User createOrUpdate();
+    User create();
+
+    User update(User user);
 
     void delete();
 
@@ -25,5 +27,5 @@ public interface IUserService {
 
     List<Address> getAllAddresses();
 
-
+    User getById(Integer id);
 }

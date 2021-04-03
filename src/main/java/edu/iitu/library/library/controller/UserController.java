@@ -15,8 +15,12 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    public User createOrUpdate() {
-        return iUserService.createOrUpdate();
+    public User create() {
+        return iUserService.create();
+    }
+
+    public User update(User user) {
+        return iUserService.update(user);
     }
 
     public void delete() {

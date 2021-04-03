@@ -49,7 +49,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User createOrUpdate() {
+    public User create() {
 
         System.out.print("Enter name: ");
         String name = in.next();
@@ -57,11 +57,19 @@ public class UserService implements IUserService {
         String email = in.next();
         System.out.print("Enter password: ");
         String password = in.next();
+        System.out.print("Enter balance: ");
+        Double balance = in.nextDouble();
 
         User user = new User();
         user.setName(name);
         user.setEmail(email);
         user.setPassword(password);
+        user.setBalance(balance);
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User update(User user) {
         return userRepository.save(user);
     }
 
@@ -102,5 +110,10 @@ public class UserService implements IUserService {
     @Override
     public List<Address> getAllAddresses() {
         return addressRepository.findAll();
+    }
+
+    @Override
+    public User getById(Integer id) {
+        return userRepository.getById(id);
     }
 }

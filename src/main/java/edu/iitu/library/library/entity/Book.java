@@ -61,7 +61,6 @@ public class Book {
                 ", state=" + state +
                 ", price=" + price +
                 ", userId=" + userId +
-                ", user=" + userId +
                 '}';
     }
 }

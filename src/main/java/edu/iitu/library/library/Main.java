@@ -7,6 +7,7 @@ import edu.iitu.library.library.controller.UserController;
 import edu.iitu.library.library.entity.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -50,7 +51,7 @@ public class Main {
 
                             switch (crudChoice) {
                                 case 1:
-                                    userController.createOrUpdate();
+                                    userController.create();
                                     break;
                                 case 2:
                                     userController.getAll();
@@ -88,7 +89,7 @@ public class Main {
 
                             switch (crudChoice) {
                                 case 1:
-                                    bookController.createOrUpdate();
+                                    bookController.create();
                                     break;
                                 case 2:
                                     bookController.getAllBooks();
@@ -129,12 +130,87 @@ public class Main {
 
                 if (currentUser != null) {
                     //MENU
-                    System.out.println("WELCOME " + currentUser.getName());
-                    System.out.println("1. Show all books");
-                    System.out.println("2. Search book");
-                    System.out.println("3. Show available books");
-                    System.out.println();
+                    int userChoice = -1;
+                    while (userChoice != 0) {
+                        System.out.println("WELCOME " + currentUser.getName());
+                        System.out.println("1. Show all books");
+                        System.out.println("2. Search book");
+                        System.out.println("3. Show available books");
+                        System.out.println("0. Logout");
 
+                        userChoice = in.nextInt();
+
+                        switch (userChoice) {
+                            case 1:
+                                List<Book> books = bookController.getAllBooks();
+                                for (int i = 1; i <= books.size(); i++) {
+                                    System.out.println(i + ". " + books.get(i - 1).getName());
+                                }
+                                int bookChoice = in.nextInt();
+                                if (bookChoice > books.size() || bookChoice <= 0) {
+                                    System.out.println("Wrong choice!");
+                                } else {
+                                    Book currentBook = books.get(bookChoice - 1);
+                                    System.out.println(currentBook);
+                                    System.out.println("Do you want to buy this book?");
+                                    System.out.println("1. Yes");
+                                    System.out.println("2. No");
+
+                                    int buyChoice = in.nextInt();
+
+                                    if (buyChoice == 1) {
+                                        bookController.buy(currentUser, currentBook);
+                                    }
+                                }
+                                break;
+                            case 2:
+                                System.out.print("Enter name of book");
+                                String searchName = in.next();
+
+                                Book currentBook = new Book();
+                                currentBook = bookController.getByName(searchName);
+                                if (currentBook != null) {
+                                    System.out.println(currentBook);
+                                    System.out.println("Do you want to buy this book?");
+                                    System.out.println("1. Yes");
+                                    System.out.println("2. No");
+
+                                    int buyChoice = in.nextInt();
+
+                                    if (buyChoice == 1) {
+                                        bookController.buy(currentUser, currentBook);
+                                    }
+                                } else {
+                                    System.out.println("No such book!");
+                                }
+                                break;
+                            case 3:
+                                List<Book> availableBooks = bookController.getAvailableBooks();
+                                for (int i = 1; i <= availableBooks.size(); i++) {
+                                    System.out.println(i + ". " + availableBooks.get(i - 1).getName());
+                                }
+                                int bookSelect = in.nextInt();
+                                if (bookSelect > availableBooks.size() || bookSelect <= 0) {
+                                    System.out.println("Wrong choice!");
+                                } else {
+                                    Book currentBook1 = availableBooks.get(bookSelect - 1);
+                                    System.out.println(currentBook1);
+                                    System.out.println("Do you want to buy this book?");
+                                    System.out.println("1. Yes");
+                                    System.out.println("2. No");
+
+                                    int buyChoice = in.nextInt();
+
+                                    if (buyChoice == 1) {
+                                        bookController.buy(currentUser, currentBook1);
+                                    }
+                                }
+                                break;
+                            case 0:
+                                break;
+
+                        }
+                    }
 
                 } else {
                     System.out.println("Wrong email or password!");

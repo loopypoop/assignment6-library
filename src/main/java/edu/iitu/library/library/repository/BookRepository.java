@@ -1,6 +1,7 @@
 package edu.iitu.library.library.repository;
 
 import edu.iitu.library.library.entity.Book;
+import edu.iitu.library.library.entity.BookState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +21,8 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     @Query(value = "select b from Book b join Author a on a.name = :name")
     List<Book> findAllByAuthorName(@Param("name") String name);
+
+    Book getBookByName(String name);
+
+    List<Book> getAllByState(BookState state);
 }

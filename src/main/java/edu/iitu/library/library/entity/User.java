@@ -24,6 +24,9 @@ public class User {
     @Column
     private String password;
 
+    @Column
+    private Double balance;
+
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Address address;
 
