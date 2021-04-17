@@ -2,19 +2,26 @@ package edu.iitu.library.library.service.impl;
 
 import edu.iitu.library.library.entity.Address;
 import edu.iitu.library.library.entity.Book;
+import edu.iitu.library.library.entity.Role;
 import edu.iitu.library.library.entity.User;
 import edu.iitu.library.library.repository.AddressRepository;
 import edu.iitu.library.library.repository.BookRepository;
+import edu.iitu.library.library.repository.RoleRepository;
 import edu.iitu.library.library.repository.UserRepository;
 import edu.iitu.library.library.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 @Service
-public class UserService implements IUserService {
+public class UserService implements IUserService, UserDetailsService {
 
     Scanner in = new Scanner(System.in);
 
@@ -27,6 +34,11 @@ public class UserService implements IUserService {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Override
     public Address getAddressByUserId(Integer userId) {
@@ -34,13 +46,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User login() {
-        System.out.print("Enter email: ");
-        String email = in.next();
-        System.out.print("Enter password: ");
-        String password = in.next();
+    public void signup(User user) {
+        Role userRole = roleRepository.findByName("USER");
 
-        return userRepository.getByEmailAndPassword(email, password);
+        System.out.println("user = " + user.getUsername());
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setBalance(0.0);
+        user.setRoles(Arrays.asList(userRole));
+
+        userRepository.save(user);
+
+        System.out.println("User signed up successfully!");
+    }
+
+    @Override
+    public User login(User user) {
+        return null;
     }
 
     @Override
@@ -49,22 +71,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User create() {
+    public User create(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
-        System.out.print("Enter name: ");
-        String name = in.next();
-        System.out.print("Enter email: ");
-        String email = in.next();
-        System.out.print("Enter password: ");
-        String password = in.next();
-        System.out.print("Enter balance: ");
-        Double balance = in.nextDouble();
-
-        User user = new User();
-        user.setName(name);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setBalance(balance);
+    @Override
+    public User createCustom(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -115,5 +129,15 @@ public class UserService implements IUserService {
     @Override
     public User getById(Integer id) {
         return userRepository.getById(id);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+
+        if (user == null) {
+            throw new UsernameNotFoundException("User: " + username + " not found!");
+        }
+            return user;
     }
 }

@@ -9,11 +9,15 @@ import java.util.List;
 public interface IUserService {
     Address getAddressByUserId(Integer id);
 
-    User login();
+    void signup(User user);
+
+    User login(User user);
 
     List<User> getAllUsers();
 
-    User create();
+    User create(User user);
+
+    User createCustom(User user);
 
     User update(User user);
 

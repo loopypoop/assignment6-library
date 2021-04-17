@@ -1,9 +1,7 @@
 package edu.iitu.library.library;
 
 import edu.iitu.library.library.config.SpringConfig;
-import edu.iitu.library.library.controller.AuthorController;
-import edu.iitu.library.library.controller.BookController;
-import edu.iitu.library.library.controller.UserController;
+import edu.iitu.library.library.controller.*;
 import edu.iitu.library.library.entity.*;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -19,11 +17,14 @@ public class Main {
         UserController userController = context.getBean(UserController.class);
         BookController bookController = context.getBean(BookController.class);
         AuthorController authorController = context.getBean(AuthorController.class);
+        AuthController authController = context.getBean(AuthController.class);
+        AddressController addressController = context.getBean(AddressController.class);
 
         Scanner in = new Scanner(System.in);
 
         System.out.println("1. CRUD");
         System.out.println("2. Login");
+        System.out.println("3. Signup");
         System.out.println("0. Exit");
 
         int initialChoice = in.nextInt();
@@ -51,7 +52,21 @@ public class Main {
 
                             switch (crudChoice) {
                                 case 1:
-                                    userController.create();
+                                    System.out.print("Enter name: ");
+                                    String name = in.next();
+                                    System.out.print("Enter email: ");
+                                    String email = in.next();
+                                    System.out.print("Enter password: ");
+                                    String password = in.next();
+                                    System.out.print("Enter balance: ");
+                                    Double balance = in.nextDouble();
+
+                                    User userCreate = new User();
+                                    userCreate.setName(name);
+                                    userCreate.setEmail(email);
+                                    userCreate.setPassword(password);
+                                    userCreate.setBalance(balance);
+                                    userController.create(userCreate);
                                     break;
                                 case 2:
                                     userController.getAll();
@@ -70,10 +85,10 @@ public class Main {
 
                             switch (crudChoice) {
                                 case 1:
-                                    userController.createOrUpdateAddress();
+                                    addressController.createOrUpdateAddress();
                                     break;
                                 case 2:
-                                    userController.getAllAddresses();
+                                    addressController.getAllAddresses();
                                     break;
                                 case 3:
                                     userController.delete();
@@ -126,7 +141,15 @@ public class Main {
 
             //SERVICES
             case 2:
-                User currentUser = userController.login();
+                System.out.print("Enter email: ");
+                String username = in.next();
+                System.out.print("Enter password: ");
+                String password = in.next();
+
+                User currentUser = new User();
+                currentUser.setUsername(username);
+                currentUser.setPassword(password);
+                        authController.login(currentUser);
 
                 if (currentUser != null) {
                     //MENU
@@ -215,6 +238,20 @@ public class Main {
                 } else {
                     System.out.println("Wrong email or password!");
                 }
+                break;
+            case 3:
+                System.out.print("Enter name: ");
+                String newName = in.next();
+                System.out.print("Enter email: ");
+                String newEmail = in.next();
+                System.out.print("Enter password: ");
+                String newPassword = in.next();
+
+                User newUser = new User();
+                newUser.setName(newName);
+                newUser.setEmail(newEmail);
+                newUser.setPassword(newPassword);
+                authController.signup(newUser);
                 break;
             case 0:
                 System.out.println("Good bye!");
