@@ -22,11 +22,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/signup").permitAll()
                 .antMatchers("/users/hello/**").permitAll()
-                .antMatchers("/users/signup").permitAll()
                 .antMatchers("/users/read").hasAuthority("ADMIN")
                 .antMatchers("/users/create-user").hasAuthority("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers("/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**").permitAll()
+                .anyRequest().permitAll()
                 .and()
 
                 .addFilter(new JwtTokenGeneratorFilter(authenticationManager()))

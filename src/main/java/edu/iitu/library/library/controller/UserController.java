@@ -1,10 +1,12 @@
 package edu.iitu.library.library.controller;
 
-import edu.iitu.library.library.entity.Address;
 import edu.iitu.library.library.entity.Book;
 import edu.iitu.library.library.entity.User;
 import edu.iitu.library.library.service.IUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Api(value = "User Controller Class", description = "This class allows to interact with User object")
 public class UserController {
 
     @Autowired
@@ -47,7 +50,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/read", method = RequestMethod.GET)
+    @ApiOperation(value = "Method to get list of users", response = List.class)
     public List<User> getAll() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("authentication = " + authentication.getName());
         return iUserService.getAllUsers();
     }
 
